@@ -16,15 +16,18 @@ zhaozch3
 #define FRAME_LEN 441
 //滤波器数目
 #define FILTER_NUM 40
+//输出特征维度
+#define NDCTS 13
 
 class mfcc {
 public:
 	float* _window;
+	float* _lift_window;
 
 	float* _energyspectrum;
 	float* _mel;
 	//结果
-	float _ans[13];
+	float _ans[NDCTS];
 
 	fftw_complex *in, *out;
 	fftw_plan plan;
@@ -32,7 +35,7 @@ public:
 	mfcc();
 	~mfcc();
 
-	bool process(int16_t* frame, int32_t samplerate);
+	bool process(float* frame, int32_t samplerate);
 };
 
 #endif
