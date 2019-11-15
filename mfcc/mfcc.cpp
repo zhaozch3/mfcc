@@ -94,10 +94,11 @@ void computeMel(float *mel, const int sampleRate, const float *energySpectrum) {
 }
 
 void DCT(const float *mel, float *c) {
-	for (int i = 0; i < NDCTS; i++) {
+	for (int i = 1; i < NDCTS + 1; i++) {
 		for (int j = 0; j < FILTER_NUM; j++) {
-			if (mel[j] <= -0.00000000001 || mel[j] >= 0.00000000001)
-				c[i] += log(mel[j]) * cos(pi * i / (2 * FILTER_NUM) * (2 * j + 1));
+			if (mel[j] <= -0.00000000001 || mel[j] >= 0.00000000001) {
+				c[i - 1] += log(mel[j]) * cos(pi * i / (2 * FILTER_NUM) * (2 * j + 1));
+			}
 		}
 	}
 }
@@ -128,4 +129,5 @@ bool mfcc::process(float* frame, int32_t samplerate) {
 	for (int i = 0; i < NDCTS; i++) {
 		_ans[i] *= _lift_window[i];
 	}
+	return true;
 }
